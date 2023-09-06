@@ -1,0 +1,6 @@
+.env
+*.code-workspace
+archive
+*/**/*App
+*/**/db-data/*/*
+!.gitkeep
