@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+    broker-service:
+        build:
+            context: ./../broker-service
+            dockerfile: ./../broker-service/broker-service.dockerfile
+        restart: always
+        deploy:
+            mode: replicated
+            replicas: 1
+        ports:
+            - '8080:80'
+
+    session-service:
+        build: 
+            context: ./../session-service
+            dockerfile: ./../session-service/session-service.dockerfile
+        restart: always
+        deploy:
+            mode: replicated
+            replicas: 1
+        environment:
+            MONGO_URL: ${MONGO_URL}
+            MONGO_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+            MONGO_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+
+    mongo:
+        image: mongo:4.2.24-bionic
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME}"
+            MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD}"
+            MONGO_INITDB_DATABASE: "${MONGO_INITDB_DATABASE}"
+        volumes:
+            - "./db-data/mongo:/data/db"
