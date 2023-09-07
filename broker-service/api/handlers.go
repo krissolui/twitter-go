@@ -30,5 +30,10 @@ func (app *Config) fail(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	app.writeResponse(w, "", session)
+	if session == nil {
+		app.writeResponse(w, "no active session")
+		return
+	}
+
+	app.writeResponse(w, "get active session", session)
 }
