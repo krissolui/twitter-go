@@ -7,5 +7,9 @@ const (
 )
 
 func errorCode(err int) ErrorCode {
-	return []ErrorCode{"EBadRequest", "EInvalidParams", "EInvalidAction"}[err]
+	return []ErrorCode{
+		"EBadRequest",
+		"EInvalidParams",
+		"EInvalidAction",
+	}[err]
 }

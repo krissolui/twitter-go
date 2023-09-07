@@ -4,23 +4,23 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"strconv"
+
+	osutils "github.com/krissolui/go-utils/os-utils"
 )
 
-const defualtWebPort = "80"
+const (
+	defualtWebPort           = "80"
+	defaultSessionServiceURL = "http://session-service"
+)
 
 func main() {
-	// get port from environment or use default port
-	var webPort = defualtWebPort
-	if p := os.Getenv("WEB_PORT"); p != "" {
-		if _, err := strconv.Atoi(p); err == nil {
-			webPort = p
-		}
-	}
+	webPort := osutils.GetEnv("WEB_PORT", defualtWebPort)
+	sessionServiceURL := osutils.GetEnv("SESSION_SERVICE_URL", defaultSessionServiceURL)
 
 	log.Printf("Starting broker on port %s...\t", webPort)
-	app := Config{}
+	app := Config{
+		SessionServiceURL: sessionServiceURL,
+	}
 
 	server := &http.Server{
 		Addr:    fmt.Sprintf(":%s", webPort),
