@@ -1,6 +1,12 @@
 package main
 
-type Config struct{}
+import (
+	"auth-service/storage"
+)
+
+type Config struct {
+	Storage storage.Storage
+}
 
 type ErrorCode int
 

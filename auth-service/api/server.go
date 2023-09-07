@@ -1,6 +1,7 @@
 package main
 
 import (
+	"auth-service/storage"
 	"fmt"
 	"log"
 	"net/http"
@@ -14,12 +15,28 @@ const (
 
 func main() {
 	port := osutils.GetEnv("PORT", defaultPort)
+	dsn := osutils.GetEnv("DSN")
+	if dsn == "" {
+		log.Fatal("DSN is required but not found!")
+	}
 
-	app := Config{}
+	log.Printf("Connecting to postgres...\n")
+	storage, err := storage.NewStorage(dsn, &storage.ConnOptions{
+		Attempts:      10,
+		DelayInSecond: 2,
+	})
+	if err != nil {
+		log.Fatalf("Failed to connect postgres! %v", err)
+	}
+
+	app := Config{
+		Storage: storage,
+	}
+	defer app.Storage.DB.Close()
 
 	log.Printf("Starting auth service on port %s...", port)
 
-	err := http.ListenAndServe(fmt.Sprintf(":%s", port), app.routes())
+	err = http.ListenAndServe(fmt.Sprintf(":%s", port), app.routes())
 	if err != nil {
 		log.Fatal(err)
 	}

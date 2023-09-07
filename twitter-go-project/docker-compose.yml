@@ -35,13 +35,16 @@ services:
         deploy:
             mode: replicated
             replicas: 1
+        environment:
+            DSN: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?${POSTGRES_ARGS}
         ports:
             - "8082:80"
-        
 
     mongo:
         image: mongo:4.2.24-bionic
         restart: always
+        deploy:
+            mode: global
         environment:
             MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME}"
             MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD}"
@@ -50,3 +53,15 @@ services:
             - "./db-data/mongo:/data/db"
         ports:
             - "27017:27017"
+    
+    postgres:
+        image: postgres:14.9
+        restart: always
+        deploy:
+            mode: global
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+        ports:
+            - "5432:5432"
