@@ -26,6 +26,18 @@ services:
             MONGO_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
         ports:
             - '8081:80'
+    
+    auth-service:
+        build:
+            context: ./../auth-service
+            dockerfile: ./../auth-service/auth-service.dockerfile
+        restart: always
+        deploy:
+            mode: replicated
+            replicas: 1
+        ports:
+            - "8082:80"
+        
 
     mongo:
         image: mongo:4.2.24-bionic
