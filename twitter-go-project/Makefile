@@ -21,12 +21,12 @@ build: build_broker build_session build_auth
 
 build_broker:
 	@echo "Building broker service..."
-	cd ../broker-service && ./build_go.sh -o -a ${BUILD_ARCH} ./api ${BROKER_APP}
+	cd ../broker-service && ../twitter-go-project/build_go.sh -o -a ${BUILD_ARCH} ./api ${BROKER_APP}
 
 build_session:
 	@echo "Building session service..."
-	cd ../session-service && ./build_go.sh -o -a ${BUILD_ARCH} ./api ${SESSION_APP}
+	cd ../session-service && ../twitter-go-project/build_go.sh -o -a ${BUILD_ARCH} ./api ${SESSION_APP}
 
 build_auth:
 	@echo "Building auth service..."
-	cd ../auth-service && ./build_go.sh -o -a ${BUILD_ARCH} ./api ${AUTH_APP}
+	cd ../auth-service && ../twitter-go-project/build_go.sh -o -a ${BUILD_ARCH} ./api ${AUTH_APP}
