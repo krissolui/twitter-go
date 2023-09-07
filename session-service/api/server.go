@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-const defualtWebPort = "80"
+const defualtPort = "80"
 
 func main() {
 	mongo, err := storage.NewStorage()
@@ -24,17 +24,17 @@ func main() {
 	}
 
 	// get port from environment or use default port
-	var webPort = defualtWebPort
-	if p := os.Getenv("WEB_PORT"); p != "" {
+	var port = defualtPort
+	if p := os.Getenv("PORT"); p != "" {
 		if _, err := strconv.Atoi(p); err == nil {
-			webPort = p
+			port = p
 		}
 	}
 
-	log.Printf("Starting session service on port %s...\t", webPort)
+	log.Printf("Starting session service on port %s...\t", port)
 
 	server := &http.Server{
-		Addr:    fmt.Sprintf(":%s", webPort),
+		Addr:    fmt.Sprintf(":%s", port),
 		Handler: app.route(),
 	}
 
@@ -43,5 +43,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Printf("Broker listening on port %s...\t", webPort)
+	log.Printf("Broker listening on port %s...\t", port)
 }

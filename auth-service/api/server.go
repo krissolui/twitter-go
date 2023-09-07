@@ -9,17 +9,17 @@ import (
 )
 
 const (
-	defaultWebPort = "80"
+	defaultPort = "80"
 )
 
 func main() {
-	webPort := osutils.GetEnv("WEB_PORT", defaultWebPort)
+	port := osutils.GetEnv("PORT", defaultPort)
 
 	app := Config{}
 
-	log.Printf("Starting auth service on port %s...", webPort)
+	log.Printf("Starting auth service on port %s...", port)
 
-	err := http.ListenAndServe(fmt.Sprintf(":%s", webPort), app.routes())
+	err := http.ListenAndServe(fmt.Sprintf(":%s", port), app.routes())
 	if err != nil {
 		log.Fatal(err)
 	}
