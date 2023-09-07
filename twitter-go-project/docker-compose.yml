@@ -24,6 +24,8 @@ services:
             MONGO_URL: ${MONGO_URL}
             MONGO_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
             MONGO_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+        ports:
+            - '8081:80'
 
     mongo:
         image: mongo:4.2.24-bionic
@@ -34,3 +36,5 @@ services:
             MONGO_INITDB_DATABASE: "${MONGO_INITDB_DATABASE}"
         volumes:
             - "./db-data/mongo:/data/db"
+        ports:
+            - "27017:27017"
