@@ -23,8 +23,9 @@ func (app *Config) route() http.Handler {
 	mux.Use(middleware.Heartbeat("/ping"))
 	mux.Use(middleware.Logger)
 
-	mux.Get("/", app.root)
-	mux.Get("/error", app.fail)
+	mux.Get("/session", app.getActiveSession)
+	mux.Post("/verify", app.verifySession)
+	mux.Post("/create", app.createSession)
 
 	return mux
 }

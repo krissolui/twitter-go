@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,18 +13,14 @@ import (
 const defualtWebPort = "80"
 
 func main() {
-	mongoClient, err := storage.ConnectMongo()
+	mongo, err := storage.NewStorage()
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	collection, err := storage.GetCollection(mongoClient)
-	if err != nil {
-		log.Fatal(err)
-	}
+	defer mongo.Client.Disconnect(context.TODO())
 
 	app := Config{
-		mongo: collection,
+		mongo: mongo,
 	}
 
 	// get port from environment or use default port
@@ -34,7 +31,7 @@ func main() {
 		}
 	}
 
-	log.Printf("Starting broker on port %s...\t", webPort)
+	log.Printf("Starting session service on port %s...\t", webPort)
 
 	server := &http.Server{
 		Addr:    fmt.Sprintf(":%s", webPort),

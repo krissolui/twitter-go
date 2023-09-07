@@ -1,12 +1,20 @@
 package storage
 
-import "time"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
+type Storage struct {
+	Client     *mongo.Client
+	Collection *mongo.Collection
+}
 
 type Session struct {
-	ID        string    `json:"id"`
-	Token     string    `json:"token"`
-	TTL       string    `json:"ttl"`
-	Expired   bool      `json:"expired"`
-	CreatedAt time.Time `json:created_at`
-	UpdatedAt time.Time `json:updated_at`
+	UserID    string    `json:"user_id" bson:"user_id"`
+	Token     string    `json:"token" bson:"token"`
+	TTL       string    `json:"ttl" bson:"ttl"`
+	CreatedAt time.Time `json:"created_at" bson:"created_at"`
+	ExpireAt  time.Time `json:"expire_at" bson:"expire_at"`
 }

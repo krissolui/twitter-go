@@ -1,15 +1,17 @@
 package main
 
-import "go.mongodb.org/mongo-driver/mongo"
+import (
+	"session-service/storage"
+)
 
 type ErrorCode string
 
 type Config struct {
-	mongo *mongo.Collection
+	mongo storage.Storage
 }
 
 type RequestPayload struct {
-	Action string `json:"action"`
+	storage.Session
 }
 
 type JsonResponse struct {
