@@ -1,7 +1,9 @@
 package main
 
 const (
-	EInvalidParams ErrorCode = iota
+	EInvalidPath ErrorCode = iota
+	EBadRequest  ErrorCode = iota
+	EInvalidParams
 	EInvalidCredentials
 	EInternalError
 )
@@ -9,6 +11,8 @@ const (
 func (c *ErrorCode) toString() string {
 	code := int(*c)
 	errorCodes := []string{
+		"EInvalidPath",
+		"EBadRequest",
 		"EInvalidParams",
 		"EInvalidCredentials",
 		"EInternalError",
