@@ -13,10 +13,16 @@ func (app *Config) routes() http.Handler {
 	mux.Use(middleware.Logger)
 	mux.Use(middleware.Heartbeat("/ping"))
 
+	mux.NotFound(app.invalidPath)
+
 	mux.Get("/verifyToken", app.verifyToken)
 	mux.Post("/signup", app.signup)
 	mux.Post("/login", app.login)
-	mux.Get("/logout", app.logout)
+
+	mux.Put("/{userID}", app.updateUser)
+	mux.Put("/{userID}/password", app.updatePassword)
+	mux.Get("/{userID}/logout", app.logout)
+	mux.Delete("/{userID}", app.deleteUser)
 
 	return mux
 }
