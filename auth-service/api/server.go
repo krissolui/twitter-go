@@ -28,6 +28,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to connect postgres! %v", err)
 	}
+	log.Printf("Connected to postgres.\n")
 
 	app := Config{
 		Storage: storage,
