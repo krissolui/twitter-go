@@ -20,17 +20,12 @@ func (app *Config) writeResponse(w http.ResponseWriter, message string, data ...
 	httputils.ResponseJSON(w, response, http.StatusAccepted)
 }
 
-func (app *Config) errorResponse(w http.ResponseWriter, err error, errorCode ErrorCode, data ...any) {
+func (app *Config) errorResponse(w http.ResponseWriter, err error, errorCode ErrorCode, statusCode ...int) {
 	response := JsonResponse{
 		Success: false,
 		Message: err.Error(),
-		Data:    data,
 		Error:   errorCode.toString(),
 	}
 
-	if len(data) > 0 {
-		response.Data = data[0]
-	}
-
-	httputils.ResponseError(w, response)
+	httputils.ResponseError(w, response, statusCode...)
 }
