@@ -1,11 +1,12 @@
 package storage
 
 import (
+	"auth-service/internal/entity"
 	"context"
 	"database/sql"
 )
 
-func (s *Storage) CreateUser(user CreateUserEntry) (string, error) {
+func (s *Storage) CreateUser(user entity.CreateUserEntry) (string, error) {
 	db := s.DB
 	tx, err := db.BeginTx(context.TODO(), nil)
 	if err != nil {
@@ -35,7 +36,7 @@ func (s *Storage) CreateUser(user CreateUserEntry) (string, error) {
 	return userID, nil
 }
 
-func (s *Storage) UpdateUser(user User) (string, error) {
+func (s *Storage) UpdateUser(user entity.User) (string, error) {
 	db := s.DB
 	tx, err := db.BeginTx(context.TODO(), nil)
 	if err != nil {
@@ -60,14 +61,14 @@ func (s *Storage) UpdateUser(user User) (string, error) {
 	return user.UserID, nil
 }
 
-func (s *Storage) GetUserById(userID string) (*User, error) {
+func (s *Storage) GetUserById(userID string) (*entity.User, error) {
 	db := s.DB
 	query := `
 		SELECT user_id, username, email, icon, created_at, updated_at 
 		FROM users WHERE user_id = $1;
 	`
 
-	var user User
+	var user entity.User
 	row := db.QueryRow(query, userID)
 	err := row.Scan(
 		&user.UserID,
@@ -88,14 +89,14 @@ func (s *Storage) GetUserById(userID string) (*User, error) {
 	return nil, err
 }
 
-func (s *Storage) GetUserByEmail(email string) (*User, error) {
+func (s *Storage) GetUserByEmail(email string) (*entity.User, error) {
 	db := s.DB
 	query := `
 		SELECT user_id, username, email, icon, created_at, updated_at 
 		FROM users WHERE email = $1;
 	`
 
-	var user User
+	var user entity.User
 	row := db.QueryRow(query, email)
 	err := row.Scan(
 		&user.UserID,
@@ -116,14 +117,14 @@ func (s *Storage) GetUserByEmail(email string) (*User, error) {
 	return nil, err
 }
 
-func (s *Storage) GetUserByUsername(username string) (*User, error) {
+func (s *Storage) GetUserByUsername(username string) (*entity.User, error) {
 	db := s.DB
 	query := `
 		SELECT user_id, username, email, icon, created_at, updated_at 
 		FROM users WHERE username = $1;
 	`
 
-	var user User
+	var user entity.User
 	row := db.QueryRow(query, username)
 	err := row.Scan(
 		&user.UserID,
@@ -162,7 +163,7 @@ func (s *Storage) DeleteUser(userID string) error {
 	return nil
 }
 
-func (s *Storage) UpdateUserPassword(userPassword UpdatePasswordEntry) (string, error) {
+func (s *Storage) UpdateUserPassword(userPassword entity.UpdatePasswordEntry) (string, error) {
 	db := s.DB
 	tx, err := db.BeginTx(context.TODO(), nil)
 	if err != nil {
